@@ -46,9 +46,10 @@ export function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="text-white/80 hover:text-yellow-500 transition-colors duration-200"
+                  className="relative text-white/80 hover:text-yellow-500 transition-colors duration-200 group"
                 >
                   {link.label}
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-yellow-500 group-hover:w-full transition-all duration-300" />
                 </Link>
               ))}
             </div>
@@ -82,34 +83,68 @@ export function Navbar() {
 
       {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 z-40 bg-black/95 backdrop-blur-xl md:hidden"
-          onClick={() => setIsMobileMenuOpen(false)}
-        >
-          <div className="flex flex-col items-center justify-center h-full space-y-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="text-2xl text-white/80 hover:text-yellow-500 transition-colors"
+        <>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-40 bg-black/95 backdrop-blur-xl md:hidden"
+            onClick={() => setIsMobileMenuOpen(false)}
+          />
+          <motion.div
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
+            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+            className="fixed right-0 top-0 bottom-0 w-80 bg-zinc-900 border-l border-white/10 z-50 md:hidden overflow-y-auto"
+          >
+            <div className="p-6">
+              {/* Close button */}
+              <button
                 onClick={() => setIsMobileMenuOpen(false)}
+                className="absolute top-6 right-6 p-2 rounded-lg hover:bg-white/5 transition-colors"
               >
-                {link.label}
-              </Link>
-            ))}
-            <Link href="/dashboard" onClick={() => setIsMobileMenuOpen(false)}>
-              <button className="text-2xl text-white/80 hover:text-yellow-500 transition-colors">
-                Dashboard
+                <X className="w-6 h-6 text-white" />
               </button>
-            </Link>
-            <Link href="/booking" onClick={() => setIsMobileMenuOpen(false)}>
-              <GoldButton size="lg">Book Now</GoldButton>
-            </Link>
-          </div>
-        </motion.div>
+
+              {/* Menu content */}
+              <div className="mt-16 space-y-6">
+                <div>
+                  <p className="text-xs uppercase tracking-wider text-white/40 mb-4">Navigation</p>
+                  <div className="space-y-2">
+                    {navLinks.map((link) => (
+                      <Link
+                        key={link.href}
+                        href={link.href}
+                        className="block py-3 px-4 text-lg text-white/80 hover:text-yellow-500 hover:bg-white/5 rounded-lg transition-all"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        {link.label}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="border-t border-white/10 pt-6">
+                  <p className="text-xs uppercase tracking-wider text-white/40 mb-4">Account</p>
+                  <Link
+                    href="/dashboard"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="block py-3 px-4 text-lg text-white/80 hover:text-yellow-500 hover:bg-white/5 rounded-lg transition-all"
+                  >
+                    Dashboard
+                  </Link>
+                </div>
+
+                <div className="pt-4">
+                  <Link href="/booking" onClick={() => setIsMobileMenuOpen(false)}>
+                    <GoldButton size="lg" className="w-full">Book Now</GoldButton>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </>
       )}
     </>
   )

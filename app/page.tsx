@@ -11,6 +11,7 @@ import { AIChatWidget } from "@/components/ai-chat-widget"
 import { FadeIn } from "@/components/ui/fade-in"
 import { StaggerContainer, StaggerItem } from "@/components/ui/stagger-container"
 import { AnimatedGradient } from "@/components/ui/animated-gradient"
+import { ScrollToTop } from "@/components/ui/scroll-to-top"
 
 export default function Home() {
   const featuredBartenders = [
@@ -327,6 +328,7 @@ export default function Home() {
       </footer>
 
       <AIChatWidget />
+      <ScrollToTop />
     </div>
   )
 }
