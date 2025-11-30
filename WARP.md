@@ -69,11 +69,16 @@ The application uses a multi-table PostgreSQL schema with comprehensive Row Leve
 - Font optimization via `next/font` (Geist Sans & Geist Mono)
 - TypeScript paths configured in `tsconfig.json`
 
-**Current State:**
-- Minimal implementation - only base layout and home page exist
-- No API routes, server actions, or middleware yet
-- No Supabase client initialization code yet
-- No Stripe integration code yet
+**Implementation Status:**
+- ✅ Supabase client utilities (`lib/supabase/client.ts` and `lib/supabase/server.ts`)
+- ✅ Middleware with auth & role-based route protection (`middleware.ts`)
+- ✅ AI Concierge API with 5 tools (`app/api/chat/route.ts`)
+- ✅ Stripe API routes for checkout and Connect onboarding
+- ✅ Auth pages (login/signup with role selection)
+- ✅ Admin approval dashboard (`app/admin/page.tsx`)
+- ✅ Bartender onboarding flow (`app/bartender/onboarding/page.tsx`)
+- ✅ Core UI components (ConciergeChat, ApprovalList)
+- ✅ AI knowledge base JSON files (`lib/data/`)
 
 ### Styling System
 
@@ -105,10 +110,11 @@ Stripe is used for:
 
 ### Environment Variables
 
-Required environment variables (not yet in codebase):
+Required environment variables (configured in `.env.local`):
 - Supabase: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`
-- Stripe: `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`, `STRIPE_SECRET_KEY`
+- Stripe: `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`, `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`
 - OpenAI: `OPENAI_API_KEY`
+- App: `NEXT_PUBLIC_APP_URL`
 
 ## Development Guidelines
 
@@ -139,3 +145,54 @@ Required environment variables (not yet in codebase):
 - Reference CSS custom properties for colors (e.g., `bg-primary`, `text-foreground`)
 - Dark mode classes automatically apply via `.dark` selector
 - Border radius defaults to `--radius: 0.75rem`
+
+## AI Concierge Architecture
+
+The AI Concierge (`app/api/chat/route.ts`) uses Vercel AI SDK with OpenAI (gpt-4-turbo) and includes 5 function tools:
+
+1. **get_recipe** - Searches cocktail database by name, type, or flavor profile
+2. **estimate_shopping_list** - Calculates bottle quantities using dry hire formulas (light/moderate/heavy drinking levels)
+3. **check_safety** - Validates TABC compliance (1 bartender per 50-75 guests)
+4. **search_talent** - Queries approved bartenders from `bartender_details` table
+5. **get_upsells** - Returns premium service add-ons from knowledge base
+
+**Knowledge Base Files:**
+- `lib/data/cocktails.json` - Cocktail recipes with ingredients, glassware, difficulty
+- `lib/data/dry_hire_logic.json` - Serving calculations, bottle math, upsell packages
+- `lib/data/rules.json` - Brand compliance rules (TABC, last call, staff ratios)
+
+The AI system prompt enforces a "Digital Speakeasy" brand voice - sophisticated, noir, and ultra-luxury.
+
+## Key Workflows
+
+### Booking Flow
+- Client creates booking (inquiry status) → assigned to bartender
+- Status progression: `inquiry` → `confirmed` → `completed`/`cancelled`
+- All Stripe payment transactions must be logged in `payments` table
+
+### Bartender Approval Flow
+- Bartenders sign up → complete profile + Stripe Connect onboarding
+- Admin reviews via `/admin` dashboard
+- Only `approval_status: 'approved'` bartenders are publicly searchable
+- RLS policies enforce: bartenders see own pending details, public sees only approved
+
+### Middleware Protection
+- `/admin/*` routes require `role: 'admin'`
+- `/bartender/*` routes require `role: 'bartender'`
+- Unauthenticated users redirected to `/auth/login`
+- Session refresh handled automatically via Supabase SSR
+
+## Database Initialization
+
+Run the complete schema setup:
+```bash
+# In Supabase SQL Editor, execute:
+supabase/schema.sql
+```
+
+This creates:
+- All tables with UUID primary keys
+- RLS policies for role-based access
+- Performance indexes on foreign keys and query columns
+- `updated_at` triggers on core tables
+- Enum types: `app_role`, `approval_status`, `booking_status`

@@ -8,6 +8,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["var(--font-inter)", "sans-serif"],
+        serif: ["Georgia", "Cambria", "Times New Roman", "serif"],
+      },
       colors: {
         background: 'oklch(var(--background))',
         foreground: 'oklch(var(--foreground))',
