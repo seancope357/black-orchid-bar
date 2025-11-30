@@ -1,31 +1,121 @@
-"use client"
-
 import Link from "next/link"
+import { redirect } from "next/navigation"
 import { motion } from "framer-motion"
-import { Calendar, Clock, MapPin, Plus } from "lucide-react"
+import { Calendar, Clock, MapPin, Plus, AlertCircle } from "lucide-react"
 import { GoldButton } from "@/components/ui/gold-button"
 import { GlassCard } from "@/components/ui/glass-card"
+import { createClient } from "@/lib/supabase/server"
+import { BookingCard } from "@/components/dashboard/booking-card"
+import { LoadingState } from "@/components/dashboard/loading-state"
+import { EmptyState } from "@/components/dashboard/empty-state"
 
-export default function ClientDashboard() {
-  // Mock data
-  const upcomingBookings = [
-    {
-      id: "1",
-      bartender: "Marcus Chen",
-      date: "2024-12-15",
-      time: "18:00",
-      location: "Austin, TX",
-      status: "confirmed"
-    },
-    {
-      id: "2",
-      bartender: "Sofia Martinez",
-      date: "2024-12-22",
-      time: "19:00",
-      location: "Austin, TX",
-      status: "inquiry"
-    }
-  ]
+type BookingStatus = 'inquiry' | 'confirmed' | 'completed' | 'cancelled'
+
+interface Booking {
+  id: string
+  event_date: string
+  event_duration_hours: number
+  guest_count: number
+  event_type: string | null
+  special_requests: string | null
+  status: BookingStatus
+  total_amount: string | null
+  bartender_id: string
+  bartender_details: {
+    hourly_rate: number | null
+  } | null
+  bartender_profile: {
+    full_name: string | null
+    avatar_url: string | null
+  } | null
+}
+
+interface DashboardUser {
+  id: string
+  full_name: string | null
+}
+
+async function getClientBookings(userId: string) {
+  const supabase = await createClient()
+
+  // Fetch bookings with related bartender information
+  const { data: bookings, error: bookingsError } = await supabase
+    .from('bookings')
+    .select(
+      `
+      id,
+      event_date,
+      event_duration_hours,
+      guest_count,
+      event_type,
+      special_requests,
+      status,
+      total_amount,
+      bartender_id,
+      bartender_details (
+        hourly_rate
+      ),
+      bartender_profile:bartender_id (
+        full_name,
+        avatar_url
+      )
+      `
+    )
+    .eq('client_id', userId)
+    .order('event_date', { ascending: false })
+
+  if (bookingsError) {
+    console.error('Error fetching bookings:', bookingsError)
+    return { upcoming: [], past: [] }
+  }
+
+  // Split bookings into upcoming and past
+  const now = new Date()
+  const upcoming = (bookings || [])
+    .filter(b => new Date(b.event_date) > now)
+    .sort((a, b) => new Date(a.event_date).getTime() - new Date(b.event_date).getTime())
+
+  const past = (bookings || [])
+    .filter(b => new Date(b.event_date) <= now)
+    .sort((a, b) => new Date(b.event_date).getTime() - new Date(a.event_date).getTime())
+
+  return { upcoming, past }
+}
+
+async function getClientInfo(userId: string): Promise<DashboardUser | null> {
+  const supabase = await createClient()
+
+  const { data: profile, error } = await supabase
+    .from('profiles')
+    .select('id, full_name')
+    .eq('id', userId)
+    .single()
+
+  if (error) {
+    console.error('Error fetching profile:', error)
+    return null
+  }
+
+  return profile
+}
+
+export default async function ClientDashboard() {
+  const supabase = await createClient()
+
+  // Get current user
+  const { data: { user }, error: userError } = await supabase.auth.getUser()
+
+  if (userError || !user) {
+    redirect('/auth/login')
+  }
+
+  // Get client info and bookings
+  const [clientInfo, { upcoming: upcomingBookings, past: pastBookings }] = await Promise.all([
+    getClientInfo(user.id),
+    getClientBookings(user.id)
+  ])
+
+  const firstName = clientInfo?.full_name?.split(' ')[0] || 'there'
 
   return (
     <div className="min-h-screen bg-black">
@@ -37,7 +127,7 @@ export default function ClientDashboard() {
           className="mb-12"
         >
           <h1 className="font-serif text-5xl text-white mb-2">
-            Good evening, <span className="text-yellow-500">Alex</span>
+            Good evening, <span className="text-yellow-500">{firstName}</span>
           </h1>
           <p className="text-white/60 text-lg">Welcome to your dashboard</p>
         </motion.div>
@@ -57,24 +147,17 @@ export default function ClientDashboard() {
           </Link>
         </motion.div>
 
-        {/* Active Bookings */}
+        {/* Upcoming Bookings Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
+          className="mb-16"
         >
-          <h2 className="text-3xl font-bold text-white mb-6">Your Bookings</h2>
-          
+          <h2 className="text-3xl font-bold text-white mb-6">Upcoming Bookings</h2>
+
           {upcomingBookings.length === 0 ? (
-            <GlassCard>
-              <div className="text-center py-12">
-                <Calendar className="w-16 h-16 text-white/20 mx-auto mb-4" />
-                <p className="text-white/60 mb-6">No upcoming bookings</p>
-                <Link href="/booking">
-                  <GoldButton>Book Your First Event</GoldButton>
-                </Link>
-              </div>
-            </GlassCard>
+            <EmptyState />
           ) : (
             <div className="grid md:grid-cols-2 gap-6">
               {upcomingBookings.map((booking, index) => (
@@ -84,42 +167,36 @@ export default function ClientDashboard() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3 + index * 0.1 }}
                 >
-                  <Link href={`/dashboard/client/bookings/${booking.id}`}>
-                    <GlassCard hover className="cursor-pointer">
-                      <div className="flex items-start justify-between mb-4">
-                        <h3 className="text-xl font-bold text-white">{booking.bartender}</h3>
-                        <span
-                          className={`px-3 py-1 rounded-full text-xs font-bold ${
-                            booking.status === "confirmed"
-                              ? "bg-green-500/20 text-green-400 border border-green-500/30"
-                              : "bg-yellow-500/20 text-yellow-400 border border-yellow-500/30"
-                          }`}
-                        >
-                          {booking.status}
-                        </span>
-                      </div>
-                      
-                      <div className="space-y-2 text-white/60">
-                        <div className="flex items-center">
-                          <Calendar className="w-4 h-4 mr-2" />
-                          <span>{booking.date}</span>
-                        </div>
-                        <div className="flex items-center">
-                          <Clock className="w-4 h-4 mr-2" />
-                          <span>{booking.time}</span>
-                        </div>
-                        <div className="flex items-center">
-                          <MapPin className="w-4 h-4 mr-2" />
-                          <span>{booking.location}</span>
-                        </div>
-                      </div>
-                    </GlassCard>
-                  </Link>
+                  <BookingCard booking={booking} />
                 </motion.div>
               ))}
             </div>
           )}
         </motion.div>
+
+        {/* Past Bookings Section */}
+        {pastBookings.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+          >
+            <h2 className="text-3xl font-bold text-white mb-6">Past Bookings</h2>
+
+            <div className="grid md:grid-cols-2 gap-6">
+              {pastBookings.map((booking, index) => (
+                <motion.div
+                  key={booking.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5 + index * 0.1 }}
+                >
+                  <BookingCard booking={booking} isPast />
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        )}
       </div>
     </div>
   )

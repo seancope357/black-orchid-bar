@@ -12,20 +12,25 @@ export interface GoldButtonProps
 }
 
 const GoldButton = React.forwardRef<HTMLButtonElement, GoldButtonProps>(
-  ({ className, asChild = false, size = "default", ...props }, ref) => {
+  ({ className, asChild = false, size = "default", disabled, ...props }, ref) => {
     const Comp = asChild ? Slot : motion.button
-    
+
     const sizeClasses = {
       default: "px-8 py-3 text-base",
       sm: "px-6 py-2 text-sm",
       lg: "px-10 py-4 text-lg"
     }
 
+    const motionProps = !asChild && !disabled ? {
+      whileHover: { scale: 1.05 },
+      whileTap: { scale: 0.95 }
+    } : {}
+
     return (
       <Comp
         ref={ref}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
+        disabled={disabled}
+        {...motionProps}
         className={cn(
           "inline-flex items-center justify-center rounded-xl font-bold",
           "bg-gradient-to-r from-yellow-600 to-yellow-400",

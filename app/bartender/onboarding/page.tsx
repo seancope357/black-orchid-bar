@@ -5,6 +5,10 @@ import { loadConnectAndInitialize } from '@stripe/connect-js'
 import { ConnectAccountOnboarding } from '@stripe/react-connect-js'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
+import { Navbar } from '@/components/navbar'
+import { GlassCard } from '@/components/ui/glass-card'
+import { GoldButton } from '@/components/ui/gold-button'
+import { Input } from '@/components/ui/input'
 
 export default function BartenderOnboarding() {
   const [stripeConnectInstance, setStripeConnectInstance] = useState<any>(null)
@@ -52,7 +56,7 @@ export default function BartenderOnboarding() {
 
   const handleProfileSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    
+
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return
 
@@ -66,6 +70,7 @@ export default function BartenderOnboarding() {
         service_area: formData.serviceArea,
         bio: formData.bio,
         specialties: formData.specialties,
+        approval_status: 'pending',
       })
 
     if (error) {
@@ -94,123 +99,131 @@ export default function BartenderOnboarding() {
 
   if (step === 'profile') {
     return (
-      <div className="min-h-screen bg-background py-12 px-6">
+      <>
+        <Navbar />
+        <div className="min-h-screen bg-black py-12 px-6">
         <div className="max-w-2xl mx-auto">
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-primary">Bartender Onboarding</h1>
-            <p className="mt-2 text-muted-foreground">Tell us about your experience</p>
+            <h1 className="font-serif text-5xl text-white mb-2">Bartender Onboarding</h1>
+            <p className="text-white/60 text-lg">Tell us about your experience</p>
           </div>
 
-          <form onSubmit={handleProfileSubmit} className="space-y-6 bg-card p-8 rounded-lg border border-border">
-            <div>
-              <label className="block text-sm font-medium mb-2">Hourly Rate ($)</label>
-              <input
+          <GlassCard>
+            <form onSubmit={handleProfileSubmit} className="space-y-6">
+              <Input
                 type="number"
+                label="Hourly Rate ($)"
                 value={formData.hourlyRate}
                 onChange={(e) => setFormData({ ...formData, hourlyRate: e.target.value })}
                 required
                 min="25"
                 max="500"
-                className="w-full px-4 py-2 bg-background border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
+                placeholder="50"
               />
-            </div>
 
-            <div>
-              <label className="block text-sm font-medium mb-2">Years of Experience</label>
-              <input
+              <Input
                 type="number"
+                label="Years of Experience"
                 value={formData.yearsExperience}
                 onChange={(e) => setFormData({ ...formData, yearsExperience: e.target.value })}
                 required
                 min="0"
                 max="50"
-                className="w-full px-4 py-2 bg-background border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
+                placeholder="5"
               />
-            </div>
 
-            <div>
-              <label className="block text-sm font-medium mb-2">Service Area</label>
-              <input
+              <Input
                 type="text"
+                label="Service Area"
                 value={formData.serviceArea}
                 onChange={(e) => setFormData({ ...formData, serviceArea: e.target.value })}
                 placeholder="e.g., Austin, TX"
                 required
-                className="w-full px-4 py-2 bg-background border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
               />
-            </div>
 
-            <div>
-              <label className="block text-sm font-medium mb-2">Bio</label>
-              <textarea
-                value={formData.bio}
-                onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
-                rows={4}
-                placeholder="Tell clients about your style and experience..."
-                className="w-full px-4 py-2 bg-background border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
-              />
-            </div>
-
-            <div>
-              <label className="flex items-center space-x-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={formData.isTABCCertified}
-                  onChange={(e) => setFormData({ ...formData, isTABCCertified: e.target.checked })}
-                  className="w-4 h-4"
+              <div>
+                <label className="block text-sm font-medium text-white/90 mb-2">Bio</label>
+                <textarea
+                  value={formData.bio}
+                  onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
+                  rows={4}
+                  placeholder="Tell clients about your style and experience..."
+                  className="flex w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-white placeholder:text-white/40 transition-colors duration-200 focus:border-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-500/20"
                 />
-                <span className="text-sm">I am TABC Certified</span>
-              </label>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium mb-2">Specialties</label>
-              <div className="flex gap-2 mb-2">
-                {['Craft Cocktails', 'Flair Bartending', 'Wine Service', 'Mocktails', 'High Volume'].map((specialty) => (
-                  <button
-                    key={specialty}
-                    type="button"
-                    onClick={() => addSpecialty(specialty)}
-                    className="px-3 py-1 text-xs bg-muted text-muted-foreground rounded-full hover:bg-primary hover:text-primary-foreground"
-                  >
-                    + {specialty}
-                  </button>
-                ))}
               </div>
-              <div className="flex flex-wrap gap-2">
-                {formData.specialties.map((specialty) => (
-                  <span
-                    key={specialty}
-                    className="px-3 py-1 text-sm bg-primary text-primary-foreground rounded-full flex items-center gap-2"
-                  >
-                    {specialty}
-                    <button type="button" onClick={() => removeSpecialty(specialty)}>×</button>
-                  </span>
-                ))}
-              </div>
-            </div>
 
-            <button
-              type="submit"
-              className="w-full py-3 bg-primary text-primary-foreground rounded-md font-medium hover:opacity-90"
-            >
-              Continue to Payment Setup
-            </button>
-          </form>
+              <div>
+                <label className="flex items-center space-x-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={formData.isTABCCertified}
+                    onChange={(e) => setFormData({ ...formData, isTABCCertified: e.target.checked })}
+                    className="w-4 h-4 rounded border-white/20 bg-white/5 text-yellow-500 focus:ring-2 focus:ring-yellow-500/20"
+                  />
+                  <span className="text-sm text-white/90">I am TABC Certified</span>
+                </label>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-white/90 mb-2">Specialties</label>
+                <div className="flex flex-wrap gap-2 mb-3">
+                  {['Craft Cocktails', 'Flair Bartending', 'Wine Service', 'Mocktails', 'High Volume'].map((specialty) => (
+                    <button
+                      key={specialty}
+                      type="button"
+                      onClick={() => addSpecialty(specialty)}
+                      className="px-3 py-1 text-xs bg-white/5 text-white/60 rounded-full hover:bg-yellow-500/20 hover:text-yellow-500 border border-white/10 transition-all"
+                    >
+                      + {specialty}
+                    </button>
+                  ))}
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {formData.specialties.map((specialty) => (
+                    <span
+                      key={specialty}
+                      className="px-3 py-1 text-sm bg-yellow-500/20 text-yellow-400 rounded-full flex items-center gap-2 border border-yellow-500/30"
+                    >
+                      {specialty}
+                      <button
+                        type="button"
+                        onClick={() => removeSpecialty(specialty)}
+                        className="hover:text-yellow-200"
+                      >
+                        ×
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <GoldButton type="submit" className="w-full">
+                Continue to Payment Setup
+              </GoldButton>
+            </form>
+          </GlassCard>
         </div>
       </div>
+      </>
     )
   }
 
   return (
-    <div className="min-h-screen bg-background py-12 px-6">
+    <>
+      <Navbar />
+      <div className="min-h-screen bg-black py-12 px-6">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-primary">Payment Setup</h1>
-          <p className="mt-2 text-muted-foreground">Connect your bank account to receive payments</p>
+          <h1 className="font-serif text-5xl text-white mb-2">Payment Setup</h1>
+          <p className="text-white/60 text-lg">Connect your bank account to receive payments</p>
         </div>
 
-        {loading && <div className="text-center">Loading Stripe...</div>}
+        {loading && (
+          <div className="text-center">
+            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-yellow-500 border-r-transparent"></div>
+            <p className="mt-4 text-white/60">Loading Stripe...</p>
+          </div>
+        )}
 
         {stripeConnectInstance && (
           <ConnectAccountOnboarding
@@ -220,5 +233,6 @@ export default function BartenderOnboarding() {
         )}
       </div>
     </div>
+    </>
   )
 }

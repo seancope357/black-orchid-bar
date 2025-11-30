@@ -9,7 +9,7 @@ interface BartenderCardProps {
   id: string
   name: string
   avatar: string
-  rating: number
+  rating?: number
   hourlyRate: number
   certifications: string[]
   specialty?: string
@@ -20,7 +20,7 @@ export function BartenderCard({
   id,
   name,
   avatar,
-  rating,
+  rating = 4.8,
   hourlyRate,
   certifications,
   specialty,
