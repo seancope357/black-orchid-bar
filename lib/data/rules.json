@@ -1,0 +1,22 @@
+{
+  "brand": {
+    "name": "Black Orchid",
+    "full_name": "Black Orchid Bar Co.",
+    "tone": "Noir, Exclusive, Ultra-Luxury",
+    "tagline": "Your Digital Speakeasy",
+    "voice": "Sophisticated, discreet, and impeccably professional"
+  },
+  "compliance": {
+    "minors": "Zero tolerance - No service to anyone under 21",
+    "last_call": "2:00 AM per TABC regulations",
+    "staff_ratio": "1 bartender per 50-75 guests recommended",
+    "certification_required": "TABC certification strongly recommended",
+    "liability": "Client provides all alcohol; we provide service only"
+  },
+  "service_standards": {
+    "response_time": "Within 24 hours for inquiries",
+    "booking_lead_time": "Minimum 7 days notice preferred",
+    "cancellation_policy": "48 hours notice for full refund",
+    "dress_code": "Professional black attire, Black Orchid branded apron"
+  }
+}

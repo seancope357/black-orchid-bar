@@ -1,0 +1,86 @@
+{
+  "disclaimer": "Black Orchid operates on a 'Dry Hire' model: Clients purchase all spirits and beer at retail (we recommend Costco or Total Wine). We provide professional bartending service, premium mixers, garnishes, and glassware.",
+  "formula": {
+    "light_drinking": {
+      "drinks_per_hour": 1,
+      "description": "Corporate events, brunch, light cocktail hours"
+    },
+    "moderate_drinking": {
+      "drinks_per_hour": 1.5,
+      "description": "Standard weddings, birthday parties, social gatherings"
+    },
+    "heavy_drinking": {
+      "drinks_per_hour": 2,
+      "description": "Late-night events, bachelor/bachelorette parties"
+    }
+  },
+  "bottle_math": {
+    "spirits_750ml": {
+      "standard_pour_oz": 1.5,
+      "servings_per_bottle": 17,
+      "note": "Assumes 1.5oz pour for cocktails"
+    },
+    "wine_750ml": {
+      "standard_pour_oz": 5,
+      "servings_per_bottle": 5,
+      "note": "Standard wine pour"
+    },
+    "beer_12oz": {
+      "servings_per_unit": 1,
+      "note": "One bottle or can = one serving"
+    },
+    "champagne_750ml": {
+      "standard_pour_oz": 4,
+      "servings_per_bottle": 6,
+      "note": "Smaller pour for bubbles"
+    }
+  },
+  "upsells": [
+    {
+      "name": "Gold Standard Mixer Package",
+      "description": "Premium mixers: fresh citrus, specialty syrups, house-made sour mix, premium tonic",
+      "price_per_guest": 8,
+      "recommended_for": "Events with craft cocktails"
+    },
+    {
+      "name": "Luxury Garnish Kit",
+      "description": "Dehydrated citrus wheels, edible flowers, herb sprigs, specialty salts",
+      "price_per_guest": 5,
+      "recommended_for": "High-end events wanting Instagram-worthy drinks"
+    },
+    {
+      "name": "Clear Ice Service",
+      "description": "Crystal-clear ice spheres and cubes, hand-carved",
+      "price_per_event": 150,
+      "recommended_for": "Whiskey-focused or spirit-forward events"
+    },
+    {
+      "name": "Mobile Bar Setup",
+      "description": "Professional portable bar with LED backlighting, gold accents",
+      "price_per_event": 300,
+      "recommended_for": "Outdoor or venue without existing bar"
+    }
+  ],
+  "shopping_list_template": {
+    "spirits": {
+      "vodka": "Tito's or Grey Goose",
+      "gin": "Tanqueray or Hendrick's",
+      "rum_white": "Bacardi or Flor de Caña",
+      "rum_dark": "Goslings or Appleton",
+      "tequila_blanco": "Espolòn or Patrón",
+      "whiskey_bourbon": "Buffalo Trace or Maker's Mark",
+      "whiskey_rye": "Bulleit Rye or Rittenhouse"
+    },
+    "basics": [
+      "Lime (1 per 5 guests)",
+      "Lemon (1 per 5 guests)",
+      "Club soda (1L per 10 guests)",
+      "Tonic water (1L per 10 guests)",
+      "Cola (2L per 15 guests)",
+      "Ginger beer (for Moscow Mules)",
+      "Simple syrup",
+      "Angostura bitters",
+      "Orange bitters"
+    ]
+  }
+}

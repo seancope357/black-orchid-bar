@@ -1,0 +1,98 @@
+[
+  {
+    "name": "Smoked Old Fashioned",
+    "type": "spirit-forward",
+    "ingredients": ["Bourbon", "Maple syrup", "Angostura bitters", "Smoke (wood chip)"],
+    "glassware": "Rocks glass",
+    "method": "Stir with ice, smoke under glass dome",
+    "flavor_profile": "Rich, smoky, slightly sweet"
+  },
+  {
+    "name": "Espresso Martini",
+    "type": "coffee",
+    "ingredients": ["Vodka", "Fresh espresso", "Coffee liqueur", "Simple syrup"],
+    "glassware": "Coupe",
+    "method": "Shake vigorously with ice, double strain",
+    "flavor_profile": "Bold, creamy, energizing"
+  },
+  {
+    "name": "Spicy Margarita",
+    "type": "tequila",
+    "ingredients": ["Tequila blanco", "Fresh lime juice", "Agave syrup", "Jalapeño slices", "Tajín rim"],
+    "glassware": "Rocks glass",
+    "method": "Shake with ice, strain over fresh ice",
+    "flavor_profile": "Bright, spicy, balanced"
+  },
+  {
+    "name": "Lavender French 75",
+    "type": "champagne",
+    "ingredients": ["Gin", "Lemon juice", "Lavender syrup", "Champagne"],
+    "glassware": "Flute",
+    "method": "Shake gin, lemon, syrup; top with champagne",
+    "flavor_profile": "Floral, elegant, effervescent"
+  },
+  {
+    "name": "Boulevardier",
+    "type": "spirit-forward",
+    "ingredients": ["Bourbon", "Campari", "Sweet vermouth"],
+    "glassware": "Coupe",
+    "method": "Stir with ice, strain",
+    "flavor_profile": "Bitter, complex, sophisticated"
+  },
+  {
+    "name": "Blackberry Bramble",
+    "type": "gin",
+    "ingredients": ["Gin", "Lemon juice", "Simple syrup", "Crème de mûre", "Fresh blackberries"],
+    "glassware": "Rocks glass",
+    "method": "Shake, pour over crushed ice, drizzle liqueur",
+    "flavor_profile": "Fruity, tart, refreshing"
+  },
+  {
+    "name": "Whiskey Sour (Gold Standard)",
+    "type": "whiskey",
+    "ingredients": ["Bourbon", "Lemon juice", "Simple syrup", "Egg white", "Angostura bitters"],
+    "glassware": "Rocks glass",
+    "method": "Dry shake, wet shake, strain",
+    "flavor_profile": "Silky, balanced, citrus-forward"
+  },
+  {
+    "name": "Cucumber Basil Gimlet",
+    "type": "gin",
+    "ingredients": ["Gin", "Lime juice", "Simple syrup", "Cucumber slices", "Fresh basil"],
+    "glassware": "Coupe",
+    "method": "Muddle cucumber and basil, shake, double strain",
+    "flavor_profile": "Fresh, herbaceous, crisp"
+  },
+  {
+    "name": "Midnight Manhattan",
+    "type": "whiskey",
+    "ingredients": ["Rye whiskey", "Averna amaro", "Sweet vermouth", "Angostura bitters"],
+    "glassware": "Coupe",
+    "method": "Stir with ice, strain, garnish with cherry",
+    "flavor_profile": "Dark, herbal, luxurious"
+  },
+  {
+    "name": "Pornstar Martini",
+    "type": "vodka",
+    "ingredients": ["Vanilla vodka", "Passionfruit puree", "Lime juice", "Simple syrup", "Prosecco sidecar"],
+    "glassware": "Coupe",
+    "method": "Shake, strain, serve with prosecco shot on side",
+    "flavor_profile": "Tropical, sweet, indulgent"
+  },
+  {
+    "name": "Paloma",
+    "type": "tequila",
+    "ingredients": ["Tequila blanco", "Fresh grapefruit juice", "Lime juice", "Agave syrup", "Club soda", "Salt rim"],
+    "glassware": "Highball",
+    "method": "Build in glass, stir gently",
+    "flavor_profile": "Citrus, refreshing, effervescent"
+  },
+  {
+    "name": "Gold Rush",
+    "type": "whiskey",
+    "ingredients": ["Bourbon", "Lemon juice", "Honey syrup"],
+    "glassware": "Rocks glass",
+    "method": "Shake with ice, strain over fresh ice",
+    "flavor_profile": "Smooth, honey-forward, balanced"
+  }
+]
