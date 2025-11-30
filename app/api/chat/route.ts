@@ -45,7 +45,10 @@ export async function POST(req: Request) {
               cocktail.type.toLowerCase().includes(keyword.toLowerCase()) ||
               cocktail.flavor_profile.toLowerCase().includes(keyword.toLowerCase())
           )
-          return results.length > 0 ? results : [{ message: 'No cocktails found matching that query.' }]
+          if (results.length === 0) {
+            return { success: false, message: 'No cocktails found matching that query.' }
+          }
+          return { success: true, results }
         },
       }),
 
