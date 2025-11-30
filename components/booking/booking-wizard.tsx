@@ -85,6 +85,15 @@ export function BookingWizard() {
   const currentStepIndex = steps.indexOf(currentStep)
   const progress = ((currentStepIndex + 1) / steps.length) * 100
 
+  const stepLabels: Record<Step, string> = {
+    details: "Event Details",
+    safety: "Safety Check",
+    bartender: "Select Bartender",
+    shopping: "Shopping List",
+    upsell: "Add-Ons",
+    payment: "Payment"
+  }
+
   // Validate current step before proceeding
   const validateStep = () => {
     setError(null)
@@ -333,34 +342,73 @@ export function BookingWizard() {
   return (
     <div className="min-h-screen bg-black py-24 px-6">
       <div className="container mx-auto max-w-4xl">
-        {/* Progress Bar */}
+        {/* Modern Progress Stepper */}
         <div className="mb-12">
-          <div className="flex items-center justify-between mb-4">
+          {/* Progress percentage bar */}
+          <div className="mb-8">
+            <div className="flex justify-between items-center mb-2">
+              <span className="text-white/60 text-sm">Step {currentStepIndex + 1} of {steps.length}</span>
+              <span className="text-yellow-500 text-sm font-semibold">{Math.round(progress)}% Complete</span>
+            </div>
+            <div className="h-2 bg-white/10 rounded-full overflow-hidden">
+              <motion.div
+                className="h-full bg-gradient-to-r from-yellow-500 to-yellow-400"
+                initial={{ width: 0 }}
+                animate={{ width: `${progress}%` }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+              />
+            </div>
+          </div>
+
+          {/* Step indicators */}
+          <div className="flex items-start justify-between relative">
             {steps.map((step, index) => (
               <div
                 key={step}
-                className={`flex items-center ${index < steps.length - 1 ? "flex-1" : ""}`}
+                className="flex flex-col items-center relative z-10"
+                style={{ width: `${100 / steps.length}%` }}
               >
-                <div
-                  className={`w-10 h-10 rounded-full flex items-center justify-center font-bold transition-all ${
-                    index <= currentStepIndex
-                      ? "bg-yellow-500 text-black"
-                      : "bg-white/10 text-white/40"
+                {/* Step circle */}
+                <motion.div
+                  initial={false}
+                  animate={{
+                    scale: index === currentStepIndex ? 1.1 : 1,
+                    backgroundColor: index <= currentStepIndex ? "rgb(234, 179, 8)" : "rgba(255, 255, 255, 0.1)"
+                  }}
+                  className={`w-12 h-12 rounded-full flex items-center justify-center font-bold mb-3 relative ${
+                    index <= currentStepIndex ? "shadow-lg shadow-yellow-500/50" : ""
                   }`}
                 >
-                  {index < currentStepIndex ? <Check className="w-5 h-5" /> : index + 1}
-                </div>
-                {index < steps.length - 1 && (
-                  <div
-                    className={`flex-1 h-1 mx-2 transition-all ${
-                      index < currentStepIndex ? "bg-yellow-500" : "bg-white/10"
-                    }`}
-                  />
-                )}
+                  {index < currentStepIndex ? (
+                    <Check className="w-6 h-6 text-black" />
+                  ) : (
+                    <span className={index === currentStepIndex ? "text-black" : "text-white/40"}>
+                      {index + 1}
+                    </span>
+                  )}
+
+                  {/* Animated ring for current step */}
+                  {index === currentStepIndex && (
+                    <motion.div
+                      className="absolute inset-0 rounded-full border-2 border-yellow-500"
+                      animate={{ scale: [1, 1.3, 1], opacity: [1, 0, 1] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    />
+                  )}
+                </motion.div>
+
+                {/* Step label */}
+                <span className={`text-xs text-center leading-tight max-w-[80px] ${
+                  index === currentStepIndex ? "text-yellow-500 font-semibold" : "text-white/60"
+                }`}>
+                  {stepLabels[step]}
+                </span>
               </div>
             ))}
+
+            {/* Connecting lines */}
+            <div className="absolute top-6 left-0 right-0 h-0.5 bg-white/10 -z-10" style={{ marginLeft: "6%", marginRight: "6%", width: "88%" }} />
           </div>
-          <p className="text-center text-white/60 text-sm capitalize">{currentStep} Information</p>
         </div>
 
         {/* Step Content */}
