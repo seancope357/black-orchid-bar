@@ -340,101 +340,80 @@ export function BookingWizard() {
   }
 
   return (
-    <div className="min-h-screen bg-black py-24 px-6">
-      <div className="container mx-auto max-w-4xl">
-        {/* Modern Progress Stepper */}
-        <div className="mb-12">
-          {/* Progress percentage bar */}
-          <div className="mb-8">
-            <div className="flex justify-between items-center mb-2">
-              <span className="text-white/60 text-sm">Step {currentStepIndex + 1} of {steps.length}</span>
-              <span className="text-yellow-500 text-sm font-semibold">{Math.round(progress)}% Complete</span>
+    <div className="min-h-screen bg-black">
+      <div className="container mx-auto max-w-6xl">
+        {/* Magazine-Style Progress - Minimalist */}
+        <div className="py-12 px-6">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <p className="text-yellow-500 font-serif text-sm tracking-widest uppercase">
+                Chapter {currentStepIndex + 1}
+              </p>
+              <h3 className="text-white font-serif text-2xl">
+                {stepLabels[currentStep]}
+              </h3>
             </div>
-            <div className="h-2 bg-white/10 rounded-full overflow-hidden">
-              <motion.div
-                className="h-full bg-gradient-to-r from-yellow-500 to-yellow-400"
-                initial={{ width: 0 }}
-                animate={{ width: `${progress}%` }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
-              />
+            <div className="text-right">
+              <span className="text-white/40 text-sm">{Math.round(progress)}% Complete</span>
             </div>
           </div>
-
-          {/* Step indicators */}
-          <div className="flex items-start justify-between relative">
-            {steps.map((step, index) => (
-              <div
-                key={step}
-                className="flex flex-col items-center relative z-10"
-                style={{ width: `${100 / steps.length}%` }}
-              >
-                {/* Step circle */}
-                <motion.div
-                  initial={false}
-                  animate={{
-                    scale: index === currentStepIndex ? 1.1 : 1,
-                    backgroundColor: index <= currentStepIndex ? "rgb(234, 179, 8)" : "rgba(255, 255, 255, 0.1)"
-                  }}
-                  className={`w-12 h-12 rounded-full flex items-center justify-center font-bold mb-3 relative ${
-                    index <= currentStepIndex ? "shadow-lg shadow-yellow-500/50" : ""
-                  }`}
-                >
-                  {index < currentStepIndex ? (
-                    <Check className="w-6 h-6 text-black" />
-                  ) : (
-                    <span className={index === currentStepIndex ? "text-black" : "text-white/40"}>
-                      {index + 1}
-                    </span>
-                  )}
-
-                  {/* Animated ring for current step */}
-                  {index === currentStepIndex && (
-                    <motion.div
-                      className="absolute inset-0 rounded-full border-2 border-yellow-500"
-                      animate={{ scale: [1, 1.3, 1], opacity: [1, 0, 1] }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                    />
-                  )}
-                </motion.div>
-
-                {/* Step label */}
-                <span className={`text-xs text-center leading-tight max-w-[80px] ${
-                  index === currentStepIndex ? "text-yellow-500 font-semibold" : "text-white/60"
-                }`}>
-                  {stepLabels[step]}
-                </span>
-              </div>
-            ))}
-
-            {/* Connecting lines */}
-            <div className="absolute top-6 left-0 right-0 h-0.5 bg-white/10 -z-10" style={{ marginLeft: "6%", marginRight: "6%", width: "88%" }} />
+          <div className="h-1 bg-white/5 rounded-full overflow-hidden">
+            <motion.div
+              className="h-full bg-yellow-500"
+              initial={{ width: 0 }}
+              animate={{ width: `${progress}%` }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+            />
           </div>
         </div>
 
-        {/* Step Content */}
-        <GlassCard>
+        {/* Step Content - Magazine Style */}
+        <AnimatePresence mode="wait">
           {error && (
-            <Alert variant="warning" className="mb-6">
-              <AlertCircle className="h-4 w-4" />
-              <AlertTitle>Attention Required</AlertTitle>
-              <AlertDescription>{error}</AlertDescription>
-            </Alert>
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="px-6 mb-6"
+            >
+              <Alert variant="warning">
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Attention Required</AlertTitle>
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            </motion.div>
           )}
 
-          <AnimatePresence mode="wait">
-            {currentStep === "details" && (
-              <motion.div
-                key="details"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                className="space-y-6"
-              >
-                <h2 className="text-3xl font-bold text-white mb-8">Event Details</h2>
+          {currentStep === "details" && (
+            <motion.div
+              key="details"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="relative"
+            >
+              {/* Full-width hero image with overlay */}
+              <div className="relative h-[400px] overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/60 to-black z-10" />
+                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1519167758481-83f29da8d3d4?q=80&w=2574')] bg-cover bg-center" />
 
+                {/* Hero text overlay */}
+                <div className="relative z-20 h-full flex items-end">
+                  <div className="container mx-auto px-6 pb-12">
+                    <h2 className="font-serif text-5xl md:text-6xl text-white mb-4 max-w-2xl leading-tight">
+                      Tell us about your <span className="italic">celebration</span>
+                    </h2>
+                    <p className="text-white/80 text-lg max-w-xl">
+                      Every great event starts with the details. Share your vision, and we'll bring it to life.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Form content with glassmorphic cards */}
+              <div className="px-6 py-12 space-y-8">
                 <div className="grid md:grid-cols-2 gap-6">
-                  <div>
-                    <Label>Event Date</Label>
+                  <div className="p-6 bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl">
+                    <Label className="text-white/90 mb-2 text-base">When is your event?</Label>
                     <Input
                       type="date"
                       value={bookingData.eventDate}
@@ -443,11 +422,12 @@ export function BookingWizard() {
                         setRecommendedBartenders(calculateRecommendedBartenders(bookingData.guestCount))
                       }}
                       min={new Date().toISOString().split('T')[0]}
+                      className="mt-2"
                     />
                   </div>
 
-                  <div>
-                    <Label>Event Duration (hours)</Label>
+                  <div className="p-6 bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl">
+                    <Label className="text-white/90 mb-2 text-base">How long will it last?</Label>
                     <Input
                       type="number"
                       placeholder="4"
@@ -455,13 +435,15 @@ export function BookingWizard() {
                       max="12"
                       value={bookingData.eventDuration || ""}
                       onChange={(e) => setBookingData({ ...bookingData, eventDuration: parseInt(e.target.value) })}
+                      className="mt-2"
                     />
+                    <p className="text-white/50 text-sm mt-2">Hours of service</p>
                   </div>
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-6">
-                  <div>
-                    <Label>Guest Count</Label>
+                  <div className="p-6 bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl">
+                    <Label className="text-white/90 mb-2 text-base">How many guests?</Label>
                     <Input
                       type="number"
                       placeholder="50"
@@ -472,135 +454,202 @@ export function BookingWizard() {
                         setBookingData({ ...bookingData, guestCount: count })
                         setRecommendedBartenders(calculateRecommendedBartenders(count))
                       }}
+                      className="mt-2"
                     />
                   </div>
 
-                  <div>
-                    <Label>Event Type</Label>
+                  <div className="p-6 bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl">
+                    <Label className="text-white/90 mb-2 text-base">What's the occasion?</Label>
                     <Input
                       type="text"
                       placeholder="Wedding, Birthday, Corporate..."
                       value={bookingData.eventType}
                       onChange={(e) => setBookingData({ ...bookingData, eventType: e.target.value })}
+                      className="mt-2"
                     />
                   </div>
                 </div>
 
-                <div>
-                  <Label>Drinking Level</Label>
-                  <div className="grid grid-cols-3 gap-4 mt-2">
+                {/* Editorial-style callout for drinking level */}
+                <div className="p-8 bg-gradient-to-br from-yellow-500/10 to-transparent border border-yellow-500/20 rounded-2xl">
+                  <p className="text-yellow-500 font-serif text-sm tracking-widest uppercase mb-3">
+                    Set The Pace
+                  </p>
+                  <h3 className="text-white font-serif text-2xl mb-4">
+                    What's the vibe of your event?
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
                     {(["light", "moderate", "heavy"] as const).map((level) => (
                       <button
                         key={level}
                         type="button"
                         onClick={() => setBookingData({ ...bookingData, drinkingLevel: level })}
-                        className={`p-4 rounded-xl border-2 transition-all capitalize ${
+                        className={`group p-6 rounded-xl border-2 transition-all ${
                           bookingData.drinkingLevel === level
-                            ? "border-yellow-500 bg-yellow-500/10"
-                            : "border-white/10 bg-white/5 hover:border-white/20"
+                            ? "border-yellow-500 bg-yellow-500/10 scale-105"
+                            : "border-white/10 bg-white/5 hover:border-white/20 hover:bg-white/10"
                         }`}
                       >
-                        <span className="text-white font-medium">{level}</span>
-                        <p className="text-xs text-white/60 mt-1">
-                          {level === "light" && "~1 drink/hr"}
-                          {level === "moderate" && "~1.5 drinks/hr"}
-                          {level === "heavy" && "~2 drinks/hr"}
+                        <span className="text-white font-semibold text-lg capitalize block mb-2">{level}</span>
+                        <p className="text-white/60 text-sm">
+                          {level === "light" && "~1 drink per hour • Casual sipping"}
+                          {level === "moderate" && "~1.5 drinks per hour • Social flow"}
+                          {level === "heavy" && "~2 drinks per hour • High energy"}
                         </p>
                       </button>
                     ))}
                   </div>
                 </div>
 
-                <div>
-                  <Label>Special Requests (Optional)</Label>
+                {/* Special requests - editorial textarea */}
+                <div className="p-6 bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl">
+                  <Label className="text-white/90 mb-3 text-base">Any special touches?</Label>
                   <Textarea
-                    placeholder="Any special requirements, cocktail preferences, or dietary restrictions..."
+                    placeholder="Signature cocktails, dietary restrictions, theme requests, or anything else we should know..."
                     value={bookingData.specialRequests}
                     onChange={(e) => setBookingData({ ...bookingData, specialRequests: e.target.value })}
                     rows={4}
+                    className="bg-white/5 border-white/10"
                   />
+                  <p className="text-white/40 text-sm mt-2 italic">Optional, but helps us personalize your experience</p>
                 </div>
-              </motion.div>
-            )}
+              </div>
+            </motion.div>
+          )}
 
-            {currentStep === "safety" && (
-              <motion.div
-                key="safety"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                className="space-y-6"
-              >
-                <h2 className="text-3xl font-bold text-white mb-8">Safety & Compliance Check</h2>
+          {currentStep === "safety" && (
+            <motion.div
+              key="safety"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="relative"
+            >
+              {/* Full-page editorial spread */}
+              <div className="grid md:grid-cols-2 gap-0 min-h-[600px]">
+                {/* Left: Image */}
+                <div className="relative h-[400px] md:h-auto overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent to-black/50 z-10" />
+                  <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=2574')] bg-cover bg-center" />
+                </div>
 
-                <div className="p-6 bg-yellow-500/10 border border-yellow-500/30 rounded-xl">
-                  <div className="flex items-start space-x-4">
-                    <div className="flex-shrink-0 w-12 h-12 rounded-full bg-yellow-500 flex items-center justify-center">
-                      <Check className="w-6 h-6 text-black" />
+                {/* Right: Content */}
+                <div className="flex flex-col justify-center px-6 md:px-12 py-12 bg-zinc-900">
+                  <p className="text-yellow-500 font-serif text-sm tracking-widest uppercase mb-4">
+                    Safety First
+                  </p>
+                  <h2 className="font-serif text-4xl md:text-5xl text-white mb-6 leading-tight">
+                    Compliance is our <span className="italic">commitment</span>
+                  </h2>
+                  <p className="text-white/70 text-lg mb-8 leading-relaxed">
+                    Texas law requires responsible service. We exceed every standard to ensure your event
+                    is not just memorable, but safe and compliant.
+                  </p>
+
+                  {/* Large pull quote style recommendation */}
+                  <div className="p-8 bg-gradient-to-br from-yellow-500/20 to-yellow-500/5 border-l-4 border-yellow-500 rounded-r-2xl mb-8">
+                    <p className="text-white/60 text-sm mb-3">For your {bookingData.guestCount} guests, we recommend:</p>
+                    <p className="font-serif text-6xl text-yellow-500 mb-2">
+                      {recommendedBartenders}
+                    </p>
+                    <p className="text-white/80 text-xl font-semibold">
+                      Certified Bartender{recommendedBartenders > 1 ? "s" : ""}
+                    </p>
+                    <p className="text-white/50 text-sm mt-4 italic">
+                      TABC guidelines: 1 bartender per 50-75 guests
+                    </p>
+                  </div>
+
+                  {/* Editorial callout boxes */}
+                  <div className="space-y-4">
+                    <div className="flex items-start gap-4 p-4 bg-white/5 rounded-xl">
+                      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
+                        <Check className="w-5 h-5 text-green-500" />
+                      </div>
+                      <div>
+                        <h4 className="text-white font-semibold mb-1">100% TABC Certified</h4>
+                        <p className="text-white/60 text-sm">Every bartender carries active state certification</p>
+                      </div>
                     </div>
-                    <div className="flex-1">
-                      <h3 className="text-xl font-bold text-white mb-2">TABC Compliance Recommendation</h3>
-                      <p className="text-white/80 mb-4">
-                        For {bookingData.guestCount} guests, we recommend:
-                      </p>
-                      <p className="text-3xl font-bold text-yellow-500 mb-2">
-                        {recommendedBartenders} Bartender{recommendedBartenders > 1 ? "s" : ""}
-                      </p>
-                      <p className="text-sm text-white/60">
-                        TABC guidelines recommend 1 bartender per 50-75 guests for safe, responsible service.
-                      </p>
+
+                    <div className="flex items-start gap-4 p-4 bg-white/5 rounded-xl">
+                      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
+                        <Check className="w-5 h-5 text-green-500" />
+                      </div>
+                      <div>
+                        <h4 className="text-white font-semibold mb-1">Responsible Service Protocols</h4>
+                        <p className="text-white/60 text-sm">ID verification and service refusal training</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-4 p-4 bg-white/5 rounded-xl">
+                      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
+                        <Check className="w-5 h-5 text-green-500" />
+                      </div>
+                      <div>
+                        <h4 className="text-white font-semibold mb-1">Fully Insured Events</h4>
+                        <p className="text-white/60 text-sm">Comprehensive liability coverage for your peace of mind</p>
+                      </div>
                     </div>
                   </div>
                 </div>
+              </div>
+            </motion.div>
+          )}
 
-                <div className="p-6 bg-white/5 rounded-xl border border-white/10">
-                  <h4 className="font-bold text-white mb-3">Safety Guidelines</h4>
-                  <ul className="space-y-2 text-white/70 text-sm">
-                    <li className="flex items-start">
-                      <Check className="w-4 h-4 mr-2 mt-0.5 text-green-500" />
-                      <span>All our bartenders are TABC certified professionals</span>
-                    </li>
-                    <li className="flex items-start">
-                      <Check className="w-4 h-4 mr-2 mt-0.5 text-green-500" />
-                      <span>Proper ID checking and service refusal protocols</span>
-                    </li>
-                    <li className="flex items-start">
-                      <Check className="w-4 h-4 mr-2 mt-0.5 text-green-500" />
-                      <span>Responsible beverage service throughout event</span>
-                    </li>
-                  </ul>
+          {currentStep === "bartender" && (
+            <motion.div
+              key="bartender"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="relative"
+            >
+              {/* Hero header */}
+              <div className="relative h-[300px] overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/70 to-black z-10" />
+                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1574096079513-d8259312b935?q=80&w=2574')] bg-cover bg-center" />
+
+                <div className="relative z-20 h-full flex items-end">
+                  <div className="container mx-auto px-6 pb-12">
+                    <p className="text-yellow-500 font-serif text-sm tracking-widest uppercase mb-3">
+                      The Talent
+                    </p>
+                    <h2 className="font-serif text-5xl md:text-6xl text-white mb-4 leading-tight">
+                      Choose your <span className="italic">artist</span>
+                    </h2>
+                    <p className="text-white/70 text-lg max-w-2xl">
+                      Each bartender brings a unique style and expertise. Select the perfect match for your event.
+                    </p>
+                  </div>
                 </div>
-              </motion.div>
-            )}
+              </div>
 
-            {currentStep === "bartender" && (
-              <motion.div
-                key="bartender"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                className="space-y-6"
-              >
-                <h2 className="text-3xl font-bold text-white mb-8">Select Your Bartender</h2>
-
+              {/* Bartender portfolio grid */}
+              <div className="px-6 py-12">
                 {isLoading ? (
-                  <div className="flex flex-col items-center justify-center py-12">
-                    <Spinner className="text-yellow-500 mb-4" />
-                    <p className="text-white/60">Loading our talented bartenders...</p>
+                  <div className="flex flex-col items-center justify-center py-24">
+                    <Spinner className="text-yellow-500 mb-6" />
+                    <p className="text-white/60 text-lg">Curating our finest talent...</p>
                   </div>
                 ) : bartenders.length === 0 ? (
-                  <Alert variant="warning">
-                    <AlertCircle className="h-4 w-4" />
-                    <AlertTitle>No Bartenders Available</AlertTitle>
-                    <AlertDescription>
-                      We couldn't find any available bartenders for your event. Please try different dates or contact support.
-                    </AlertDescription>
-                  </Alert>
+                  <div className="max-w-2xl mx-auto">
+                    <Alert variant="warning">
+                      <AlertCircle className="h-4 w-4" />
+                      <AlertTitle>No Bartenders Available</AlertTitle>
+                      <AlertDescription>
+                        We couldn't find any available bartenders for your event. Please try different dates or contact support.
+                      </AlertDescription>
+                    </Alert>
+                  </div>
                 ) : (
-                  <div className="grid md:grid-cols-2 gap-6">
-                    {bartenders.map((bartender) => (
-                      <div
+                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {bartenders.map((bartender, index) => (
+                      <motion.div
                         key={bartender.user_id}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.1 }}
                         onClick={() => {
                           setBookingData(prev => ({
                             ...prev,
@@ -608,54 +657,109 @@ export function BookingWizard() {
                             selectedBartender: bartender
                           }))
                         }}
-                        className={`relative cursor-pointer transition-all rounded-xl ${
+                        className={`group relative cursor-pointer overflow-hidden rounded-2xl transition-all duration-300 ${
                           bookingData.selectedBartenderId === bartender.user_id
-                            ? "ring-2 ring-yellow-500 ring-offset-2 ring-offset-black"
-                            : ""
+                            ? "ring-4 ring-yellow-500 scale-105"
+                            : "hover:scale-102"
                         }`}
                       >
-                        <BartenderCard
-                          id={bartender.user_id}
-                          name={bartender.profiles.full_name}
-                          avatar={bartender.profiles.avatar_url || "/placeholder-avatar.jpg"}
-                          rating={4.8}
-                          hourlyRate={bartender.hourly_rate}
-                          certifications={bartender.is_tabc_certified ? ["TABC"] : []}
-                          specialty={bartender.specialties?.[0]}
-                          onBookClick={() => {}}
-                        />
-                        {bookingData.selectedBartenderId === bartender.user_id && (
-                          <div className="absolute top-4 left-4 w-8 h-8 rounded-full bg-yellow-500 flex items-center justify-center shadow-lg">
-                            <Check className="w-5 h-5 text-black" />
+                        {/* Portfolio-style card */}
+                        <div className="relative h-[450px]">
+                          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent z-10" />
+                          <div
+                            className="absolute inset-0 bg-cover bg-center transform group-hover:scale-110 transition-transform duration-700"
+                            style={{
+                              backgroundImage: `url(${bartender.profiles.avatar_url || 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&q=80'})`
+                            }}
+                          />
+
+                          {/* Selection indicator */}
+                          {bookingData.selectedBartenderId === bartender.user_id && (
+                            <div className="absolute top-4 right-4 z-30 w-12 h-12 rounded-full bg-yellow-500 flex items-center justify-center shadow-2xl">
+                              <Check className="w-7 h-7 text-black" />
+                            </div>
+                          )}
+
+                          {/* Certifications badges */}
+                          <div className="absolute top-4 left-4 z-20 flex flex-col gap-2">
+                            {bartender.is_tabc_certified && (
+                              <span className="inline-block px-3 py-1 bg-yellow-500/90 backdrop-blur-sm text-black text-xs font-bold uppercase tracking-wider rounded-full">
+                                TABC
+                              </span>
+                            )}
+                            {bartender.years_experience >= 5 && (
+                              <span className="inline-block px-3 py-1 bg-white/20 backdrop-blur-sm border border-white/30 text-white text-xs font-semibold uppercase tracking-wider rounded-full">
+                                {bartender.years_experience}+ Years
+                              </span>
+                            )}
                           </div>
-                        )}
-                      </div>
+
+                          {/* Content overlay */}
+                          <div className="absolute bottom-0 left-0 right-0 z-20 p-6">
+                            <h3 className="font-serif text-3xl text-white mb-2">
+                              {bartender.profiles.full_name}
+                            </h3>
+                            <p className="text-white/70 text-sm mb-4">
+                              {bartender.specialties?.[0] || "Expert Bartender"}
+                            </p>
+
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-1">
+                                <Star className="w-5 h-5 text-yellow-500 fill-current" />
+                                <span className="text-white font-bold text-lg">4.8</span>
+                              </div>
+                              <div className="text-right">
+                                <div className="text-2xl font-bold text-yellow-500">
+                                  ${bartender.hourly_rate}
+                                </div>
+                                <div className="text-white/60 text-xs">/hour</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </motion.div>
                     ))}
                   </div>
                 )}
-              </motion.div>
-            )}
+              </div>
+            </motion.div>
+          )}
 
-            {currentStep === "shopping" && (
-              <motion.div
-                key="shopping"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                className="space-y-6"
-              >
-                <div className="flex items-center space-x-3 mb-8">
-                  <ShoppingCart className="w-8 h-8 text-yellow-500" />
-                  <h2 className="text-3xl font-bold text-white">Your Shopping List</h2>
+          {currentStep === "shopping" && (
+            <motion.div
+              key="shopping"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="relative"
+            >
+              {/* Hero with product imagery */}
+              <div className="relative h-[350px] overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/70 to-black z-10" />
+                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1569529465841-dfecdab7503b?q=80&w=2574')] bg-cover bg-center" />
+
+                <div className="relative z-20 h-full flex items-end">
+                  <div className="container mx-auto px-6 pb-12">
+                    <p className="text-yellow-500 font-serif text-sm tracking-widest uppercase mb-3">
+                      Your Curated Selection
+                    </p>
+                    <h2 className="font-serif text-5xl md:text-6xl text-white mb-4 leading-tight">
+                      The <span className="italic">shopping guide</span>
+                    </h2>
+                    <p className="text-white/70 text-lg max-w-2xl mb-6">
+                      We've calculated exactly what you need. You buy retail, we bring the expertise.
+                    </p>
+
+                    {/* Dry hire badge */}
+                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/20 border border-blue-500/40 rounded-full backdrop-blur-sm">
+                      <Sparkles className="w-4 h-4 text-blue-400" />
+                      <span className="text-white text-sm font-medium">Dry Hire Model • You Save 40%</span>
+                    </div>
+                  </div>
                 </div>
+              </div>
 
-                <Alert variant="default" className="bg-blue-500/10 border-blue-500/30">
-                  <Sparkles className="h-4 w-4 text-blue-400" />
-                  <AlertTitle>Dry Hire Model</AlertTitle>
-                  <AlertDescription>
-                    You'll purchase spirits at retail (we recommend Costco or Total Wine). We provide professional bartending, premium mixers, and glassware.
-                  </AlertDescription>
-                </Alert>
+              <div className="px-6 py-12">{bookingData.shopping List && <div className="space-y-12">
 
                 {bookingData.shoppingList && (
                   <>
