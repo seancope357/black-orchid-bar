@@ -759,80 +759,102 @@ export function BookingWizard() {
                 </div>
               </div>
 
-              <div className="px-6 py-12">{bookingData.shopping List && <div className="space-y-12">
+              {bookingData.shoppingList && (
+                <div className="px-6 py-12 space-y-12">
+                  {/* Big numbers - magazine style */}
+                  <div className="grid md:grid-cols-3 gap-6">
+                    <div className="p-8 bg-gradient-to-br from-yellow-500/20 to-yellow-500/5 border-l-4 border-yellow-500 rounded-r-2xl">
+                      <p className="text-white/60 text-sm mb-2 uppercase tracking-wider">Total Drinks</p>
+                      <p className="font-serif text-6xl text-yellow-500 mb-1">{bookingData.shoppingList.totalDrinks}</p>
+                      <p className="text-white/70 text-sm">drinks to serve</p>
+                    </div>
+                    <div className="p-8 bg-gradient-to-br from-yellow-500/20 to-yellow-500/5 border-l-4 border-yellow-500 rounded-r-2xl">
+                      <p className="text-white/60 text-sm mb-2 uppercase tracking-wider">Bottles Required</p>
+                      <p className="font-serif text-6xl text-yellow-500 mb-1">{bookingData.shoppingList.bottlesNeeded}</p>
+                      <p className="text-white/70 text-sm">750ml bottles</p>
+                    </div>
+                    <div className="p-8 bg-gradient-to-br from-yellow-500/20 to-yellow-500/5 border-l-4 border-yellow-500 rounded-r-2xl">
+                      <p className="text-white/60 text-sm mb-2 uppercase tracking-wider">Event Length</p>
+                      <p className="font-serif text-6xl text-yellow-500 mb-1">{bookingData.eventDuration}</p>
+                      <p className="text-white/70 text-sm">hours of service</p>
+                    </div>
+                  </div>
 
-                {bookingData.shoppingList && (
-                  <>
-                    <div className="p-6 bg-gradient-to-br from-yellow-500/10 to-yellow-500/5 border border-yellow-500/30 rounded-xl">
-                      <h3 className="text-xl font-bold text-white mb-4">Estimated Requirements</h3>
+                  {/* Spirit Mix - Product feature style */}
+                  <div className="grid md:grid-cols-2 gap-12 items-center">
+                    <div>
+                      <p className="text-yellow-500 font-serif text-sm tracking-widest uppercase mb-3">
+                        The Formula
+                      </p>
+                      <h3 className="font-serif text-4xl text-white mb-6">
+                        Recommended Spirit <span className="italic">Mix</span>
+                      </h3>
+                      <p className="text-white/60 mb-8 leading-relaxed">
+                        Based on thousands of events, this blend ensures every guest finds their perfect drink.
+                      </p>
 
-                      <div className="grid md:grid-cols-3 gap-4 mb-4">
-                        <div className="text-center p-4 bg-black/20 rounded-lg">
-                          <p className="text-sm text-white/60 mb-1">Total Drinks</p>
-                          <p className="text-2xl font-bold text-yellow-500">{bookingData.shoppingList.totalDrinks}</p>
-                        </div>
-                        <div className="text-center p-4 bg-black/20 rounded-lg">
-                          <p className="text-sm text-white/60 mb-1">Bottles Needed</p>
-                          <p className="text-2xl font-bold text-yellow-500">{bookingData.shoppingList.bottlesNeeded}</p>
-                        </div>
-                        <div className="text-center p-4 bg-black/20 rounded-lg">
-                          <p className="text-sm text-white/60 mb-1">Event Duration</p>
-                          <p className="text-2xl font-bold text-yellow-500">{bookingData.eventDuration}h</p>
-                        </div>
+                      <div className="space-y-4">
+                        {[
+                          { spirit: "Vodka", percent: 40 },
+                          { spirit: "Whiskey", percent: 20 },
+                          { spirit: "Tequila", percent: 20 },
+                          { spirit: "Gin", percent: 10 },
+                          { spirit: "Rum", percent: 10 }
+                        ].map((item) => (
+                          <div key={item.spirit} className="flex items-center gap-4">
+                            <div className="w-16 h-16 rounded-full bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0">
+                              <span className="font-bold text-yellow-500">{item.percent}%</span>
+                            </div>
+                            <div className="flex-1 h-2 bg-white/5 rounded-full overflow-hidden">
+                              <div
+                                className="h-full bg-gradient-to-r from-yellow-500 to-yellow-400"
+                                style={{ width: `${item.percent}%` }}
+                              />
+                            </div>
+                            <span className="text-white font-medium w-24">{item.spirit}</span>
+                          </div>
+                        ))}
                       </div>
-
-                      <p className="text-white/80 text-sm">{bookingData.shoppingList.breakdown}</p>
                     </div>
 
-                    <div className="p-6 bg-white/5 rounded-xl border border-white/10">
-                      <h4 className="font-bold text-white mb-4">Recommended Spirit Mix</h4>
-                      <div className="space-y-3">
-                        <div className="flex items-center justify-between">
-                          <span className="text-white/70">Vodka</span>
-                          <span className="text-yellow-500 font-semibold">40%</span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-white/70">Whiskey</span>
-                          <span className="text-yellow-500 font-semibold">20%</span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-white/70">Tequila</span>
-                          <span className="text-yellow-500 font-semibold">20%</span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-white/70">Gin</span>
-                          <span className="text-yellow-500 font-semibold">10%</span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-white/70">Rum</span>
-                          <span className="text-yellow-500 font-semibold">10%</span>
-                        </div>
+                    {/* Product image placeholder */}
+                    <div className="relative h-[400px] rounded-2xl overflow-hidden">
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10" />
+                      <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1527281400156-5e351c100fae?q=80&w=2574')] bg-cover bg-center" />
+                      <div className="absolute bottom-6 left-6 right-6 z-20">
+                        <p className="text-white/70 italic text-sm">
+                          Pro tip: Buy from Costco or Total Wine for best value
+                        </p>
                       </div>
                     </div>
+                  </div>
 
-                    <div className="p-6 bg-white/5 rounded-xl border border-white/10">
-                      <h4 className="font-bold text-white mb-4">Don't Forget</h4>
-                      <ul className="space-y-2 text-white/70 text-sm">
-                        <li className="flex items-center">
-                          <Check className="w-4 h-4 mr-2 text-green-500" />
-                          Lime (1 per 5 guests)
-                        </li>
-                        <li className="flex items-center">
-                          <Check className="w-4 h-4 mr-2 text-green-500" />
-                          Lemon (1 per 5 guests)
-                        </li>
-                        <li className="flex items-center">
-                          <Check className="w-4 h-4 mr-2 text-green-500" />
-                          Club soda & Tonic water
-                        </li>
-                        <li className="flex items-center">
-                          <Check className="w-4 h-4 mr-2 text-green-500" />
-                          Cola & Ginger beer
-                        </li>
-                      </ul>
+                  {/* Essentials checklist */}
+                  <div className="p-8 bg-zinc-900 rounded-2xl border border-white/10">
+                    <p className="text-yellow-500 font-serif text-sm tracking-widest uppercase mb-3">
+                      Essential Ingredients
+                    </p>
+                    <h4 className="font-serif text-3xl text-white mb-6">The <span className="italic">finishing touches</span></h4>
+
+                    <div className="grid md:grid-cols-2 gap-4">
+                      {[
+                        { item: "Fresh Limes", qty: `${Math.ceil(bookingData.guestCount / 5)}` },
+                        { item: "Fresh Lemons", qty: `${Math.ceil(bookingData.guestCount / 5)}` },
+                        { item: "Club Soda & Tonic", qty: "2L per 10 guests" },
+                        { item: "Cola & Ginger Beer", qty: "2L per 10 guests" }
+                      ].map((item, i) => (
+                        <div key={i} className="flex items-center gap-3 p-4 bg-white/5 rounded-lg">
+                          <Check className="w-5 h-5 text-green-500 flex-shrink-0" />
+                          <div>
+                            <p className="text-white font-medium">{item.item}</p>
+                            <p className="text-white/50 text-sm">{item.qty}</p>
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                  </>
-                )}
+                  </div>
+                </div>
+              )}
               </motion.div>
             )}
 
