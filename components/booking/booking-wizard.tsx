@@ -858,84 +858,175 @@ export function BookingWizard() {
               </motion.div>
             )}
 
-            {currentStep === "upsell" && (
-              <motion.div
-                key="upsell"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                className="space-y-6"
-              >
-                <div className="flex items-center space-x-3 mb-8">
-                  <Sparkles className="w-8 h-8 text-yellow-500" />
-                  <h2 className="text-3xl font-bold text-white">Premium Add-Ons</h2>
+          {currentStep === "upsell" && (
+            <motion.div
+              key="upsell"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="relative"
+            >
+              {/* Hero with luxury product imagery */}
+              <div className="relative h-[350px] overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/70 to-black z-10" />
+                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1470337458703-46ad1756a187?q=80&w=2569')] bg-cover bg-center" />
+
+                <div className="relative z-20 h-full flex items-end">
+                  <div className="container mx-auto px-6 pb-12">
+                    <div className="flex items-center gap-2 mb-4">
+                      <Sparkles className="w-6 h-6 text-yellow-500" />
+                      <p className="text-yellow-500 font-serif text-sm tracking-widest uppercase">
+                        Elevate Your Experience
+                      </p>
+                    </div>
+                    <h2 className="font-serif text-5xl md:text-6xl text-white mb-4 leading-tight">
+                      Luxury <span className="italic">enhancements</span>
+                    </h2>
+                    <p className="text-white/70 text-lg max-w-2xl">
+                      Transform good into unforgettable. Each upgrade has been curated to add that perfect finishing touch.
+                    </p>
+                  </div>
                 </div>
+              </div>
 
-                <p className="text-white/70 mb-6">Elevate your event with our luxury service upgrades</p>
-
+              <div className="px-6 py-12">
                 {isLoading ? (
-                  <div className="flex flex-col items-center justify-center py-12">
-                    <Spinner className="text-yellow-500 mb-4" />
-                    <p className="text-white/60">Loading premium add-ons...</p>
+                  <div className="flex flex-col items-center justify-center py-24">
+                    <Spinner className="text-yellow-500 mb-6" />
+                    <p className="text-white/60 text-lg">Curating luxury upgrades...</p>
+                  </div>
+                ) : serviceAddons.length === 0 ? (
+                  <div className="text-center py-16">
+                    <p className="text-white/60 text-lg">No premium add-ons available at this time.</p>
                   </div>
                 ) : (
-                  <div className="space-y-4">
-                    {serviceAddons.map((addon) => (
-                      <label
-                        key={addon.id}
-                        className={`flex items-start p-6 bg-white/5 rounded-xl border-2 transition-all cursor-pointer ${
-                          bookingData.selectedAddons.includes(addon.id)
-                            ? "border-yellow-500 bg-yellow-500/10"
-                            : "border-white/10 hover:border-white/20"
-                        }`}
-                      >
-                        <input
-                          type="checkbox"
-                          checked={bookingData.selectedAddons.includes(addon.id)}
-                          onChange={() => toggleAddon(addon.id)}
-                          className="mt-1 mr-4 w-5 h-5 rounded border-white/30 bg-white/10 text-yellow-500 focus:ring-yellow-500"
-                        />
-                        <div className="flex-1">
-                          <h4 className="text-white font-bold text-lg mb-1">{addon.name}</h4>
-                          <p className="text-sm text-white/60 mb-2">{addon.description}</p>
-                          {addon.category && (
-                            <span className="inline-block text-xs px-2 py-1 rounded-full bg-white/10 text-white/70">
-                              {addon.category}
-                            </span>
-                          )}
-                        </div>
-                        <div className="text-right ml-4">
-                          <span className="text-2xl font-bold text-yellow-500">
-                            ${addon.price}
-                          </span>
-                          <p className="text-xs text-white/60 mt-1">
-                            {addon.unit === 'per_guest' ? '/guest' : '/event'}
-                          </p>
-                        </div>
-                      </label>
-                    ))}
+                  <div className="grid md:grid-cols-2 gap-6">
+                    {serviceAddons.map((addon, index) => {
+                      const isSelected = bookingData.selectedAddons.includes(addon.id)
+
+                      // Assign placeholder images based on category or index
+                      const addonImages = [
+                        'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=2574',
+                        'https://images.unsplash.com/photo-1587223962930-cb7f31384c19?q=80&w=2574',
+                        'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q=80&w=2570',
+                        'https://images.unsplash.com/photo-1509669803555-fd5ddfc8e62e?q=80&w=2574'
+                      ]
+
+                      return (
+                        <motion.div
+                          key={addon.id}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: index * 0.1 }}
+                          onClick={() => toggleAddon(addon.id)}
+                          className={`group relative cursor-pointer overflow-hidden rounded-2xl transition-all duration-300 ${
+                            isSelected
+                              ? "ring-4 ring-yellow-500 scale-102"
+                              : "hover:scale-102"
+                          }`}
+                        >
+                          {/* Advertorial-style card */}
+                          <div className="relative h-[400px]">
+                            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent z-10" />
+                            <div
+                              className="absolute inset-0 bg-cover bg-center transform group-hover:scale-110 transition-transform duration-700"
+                              style={{
+                                backgroundImage: `url(${addonImages[index % addonImages.length]})`
+                              }}
+                            />
+
+                            {/* Selection indicator */}
+                            {isSelected && (
+                              <div className="absolute top-4 right-4 z-30 w-12 h-12 rounded-full bg-yellow-500 flex items-center justify-center shadow-2xl">
+                                <Check className="w-7 h-7 text-black" />
+                              </div>
+                            )}
+
+                            {/* Category badge */}
+                            {addon.category && (
+                              <div className="absolute top-4 left-4 z-20">
+                                <span className="inline-block px-3 py-1 bg-white/20 backdrop-blur-sm border border-white/30 text-white text-xs font-semibold uppercase tracking-wider rounded-full">
+                                  {addon.category}
+                                </span>
+                              </div>
+                            )}
+
+                            {/* Content overlay */}
+                            <div className="absolute bottom-0 left-0 right-0 z-20 p-6">
+                              <h3 className="font-serif text-3xl text-white mb-2">
+                                {addon.name}
+                              </h3>
+                              <p className="text-white/80 text-sm mb-4 line-clamp-2">
+                                {addon.description}
+                              </p>
+
+                              <div className="flex items-end justify-between">
+                                <div>
+                                  <div className="text-3xl font-bold text-yellow-500">
+                                    ${addon.price}
+                                  </div>
+                                  <div className="text-white/60 text-xs">
+                                    {addon.unit === 'per_guest' ? 'per guest' : 'per event'}
+                                  </div>
+                                </div>
+
+                                {isSelected ? (
+                                  <span className="px-4 py-2 bg-yellow-500 text-black text-sm font-bold rounded-full">
+                                    Added
+                                  </span>
+                                ) : (
+                                  <span className="px-4 py-2 bg-white/20 backdrop-blur-sm border border-white/30 text-white text-sm font-semibold rounded-full group-hover:bg-yellow-500 group-hover:text-black group-hover:border-yellow-500 transition-all">
+                                    Add This
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        </motion.div>
+                      )
+                    })}
                   </div>
                 )}
 
-                {serviceAddons.length === 0 && !isLoading && (
-                  <p className="text-center text-white/60 py-8">No premium add-ons available at this time.</p>
+                {/* Optional: Skip button */}
+                {serviceAddons.length > 0 && (
+                  <div className="text-center mt-12">
+                    <p className="text-white/50 text-sm italic">
+                      These upgrades are optional. Continue without add-ons if you prefer.
+                    </p>
+                  </div>
                 )}
-              </motion.div>
-            )}
+              </div>
+            </motion.div>
+          )}
 
-            {currentStep === "payment" && (
-              <motion.div
-                key="payment"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                className="space-y-6"
-              >
-                <h2 className="text-3xl font-bold text-white mb-8">Complete Your Booking</h2>
+          {currentStep === "payment" && (
+            <motion.div
+              key="payment"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="relative"
+            >
+              {/* Editorial header */}
+              <div className="px-6 pt-12 pb-8 bg-gradient-to-b from-zinc-900 to-black">
+                <p className="text-yellow-500 font-serif text-sm tracking-widest uppercase mb-3">
+                  Final Chapter
+                </p>
+                <h2 className="font-serif text-5xl md:text-6xl text-white mb-4 leading-tight">
+                  Your event <span className="italic">awaits</span>
+                </h2>
+                <p className="text-white/70 text-lg max-w-2xl">
+                  Review your selections and complete your booking. We're ready to make your event extraordinary.
+                </p>
+              </div>
 
-                {/* Booking Summary */}
-                <div className="p-6 bg-gradient-to-br from-yellow-500/10 to-yellow-500/5 border border-yellow-500/30 rounded-xl">
-                  <h3 className="text-xl font-bold text-white mb-4">Booking Summary</h3>
+              <div className="px-6 py-12 space-y-8">
+                {/* Booking Summary - Magazine-style recap */}
+                <div className="p-8 bg-gradient-to-br from-yellow-500/10 to-transparent border-l-4 border-yellow-500 rounded-r-2xl">
+                  <p className="text-yellow-500 font-serif text-sm tracking-widest uppercase mb-4">
+                    Your Event Summary
+                  </p>
 
                   <div className="space-y-3 mb-6">
                     <div className="flex justify-between text-white/80">
@@ -1019,12 +1110,14 @@ export function BookingWizard() {
                     </AlertDescription>
                   </Alert>
                 )}
-              </motion.div>
-            )}
-          </AnimatePresence>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-          {/* Navigation */}
-          <div className="flex justify-between mt-12 pt-6 border-t border-white/10">
+        {/* Navigation - Magazine-style footer */}
+        <div className="px-6 py-8 border-t border-white/10 bg-gradient-to-t from-zinc-900 to-transparent">
+          <div className="flex justify-between items-center">
             <button
               onClick={prevStep}
               disabled={currentStepIndex === 0 || isLoading}
@@ -1054,7 +1147,7 @@ export function BookingWizard() {
               </GoldButton>
             )}
           </div>
-        </GlassCard>
+        </div>
       </div>
     </div>
   )
