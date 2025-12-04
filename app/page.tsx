@@ -3,54 +3,153 @@
 import Link from "next/link"
 import Image from "next/image"
 import { motion } from "framer-motion"
-import { ArrowRight, Star, Award, Calendar, MapPin, Users, Clock } from "lucide-react"
+import { ArrowRight, Star, Award, Calendar, MapPin, Users, Clock, Sparkles } from "lucide-react"
 import { Navbar } from "@/components/navbar"
 import { GoldButton } from "@/components/ui/gold-button"
 import { AIChatWidget } from "@/components/ai-chat-widget"
 import { FadeIn } from "@/components/ui/fade-in"
 import { ScrollToTop } from "@/components/ui/scroll-to-top"
+import { Particles } from "@/components/ui/particles"
+import { TiltCard } from "@/components/ui/tilt-card"
+import { MagneticButton } from "@/components/ui/magnetic-button"
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-black">
       <Navbar />
 
-      {/* Magazine-Style Hero */}
-      <section className="relative h-screen">
-        {/* Hero Image with overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black z-10" />
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1514933651103-005eec06c04b?q=80&w=2574')] bg-cover bg-center" />
+      {/* Dramatic Hero with Premium Effects */}
+      <section className="relative h-screen overflow-hidden">
+        {/* Particle Effects */}
+        <Particles count={80} />
 
-        <div className="relative z-20 h-full flex items-end">
-          <div className="container mx-auto px-6 pb-24">
-            <div className="max-w-3xl">
+        {/* Film Grain Texture */}
+        <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay pointer-events-none z-[15]"
+          style={{
+            backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 400 400\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'3.5\' numOctaves=\'4\' /%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\' /%3E%3C/svg%3E")'
+          }}
+        />
+
+        {/* Gradient Overlays - Richer, Deeper */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black via-black/40 to-black z-10" />
+        <div className="absolute inset-0 bg-gradient-radial from-transparent via-black/20 to-black/60 z-10" />
+
+        {/* Parallax Background Image */}
+        <motion.div
+          className="absolute inset-0 scale-110"
+          initial={{ scale: 1.1 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 1.5, ease: "easeOut" }}
+        >
+          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1514933651103-005eec06c04b?q=80&w=2574')] bg-cover bg-center brightness-90 contrast-110 saturate-110" />
+        </motion.div>
+
+        {/* Content */}
+        <div className="relative z-20 h-full flex items-center">
+          <div className="container mx-auto px-6">
+            <div className="max-w-5xl">
               <motion.div
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
+                transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
               >
-                <p className="text-yellow-500 font-serif text-sm tracking-widest uppercase mb-4">
-                  Austin's Premier Bartending Service
-                </p>
-                <h1 className="font-serif text-6xl md:text-8xl text-white mb-6 leading-tight">
-                  Crafted Moments,
+                {/* Eyebrow with shimmer */}
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.3, duration: 0.8 }}
+                  className="flex items-center gap-3 mb-8"
+                >
+                  <Sparkles className="w-5 h-5 text-yellow-500 animate-pulse" />
+                  <p className="text-yellow-500 font-serif text-sm tracking-[0.3em] uppercase">
+                    Austin's Premier Bartending Service
+                  </p>
+                  <div className="h-px w-16 bg-gradient-to-r from-yellow-500 to-transparent" />
+                </motion.div>
+
+                {/* Dramatic Headline - Playfair Display */}
+                <motion.h1
+                  className="font-serif text-7xl md:text-9xl text-white mb-8 leading-[0.95] tracking-tight"
+                  initial={{ opacity: 0, y: 40 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5, duration: 1, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <span className="inline-block">Crafted</span>{" "}
+                  <span className="inline-block relative">
+                    <span className="relative z-10">Moments,</span>
+                    {/* Text shimmer effect */}
+                    <motion.span
+                      className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-500/20 to-transparent"
+                      animate={{
+                        x: ["-200%", "200%"],
+                      }}
+                      transition={{
+                        duration: 3,
+                        repeat: Infinity,
+                        repeatDelay: 2,
+                        ease: "easeInOut"
+                      }}
+                    />
+                  </span>
                   <br />
-                  <span className="italic">Unforgettable Nights</span>
-                </h1>
-                <p className="text-xl text-white/80 mb-8 max-w-2xl leading-relaxed">
-                  Your event deserves more than a bartender. It deserves an artist, a storyteller,
+                  <span className="italic text-yellow-500 inline-block mt-2 text-shadow-lg">
+                    Unforgettable Nights
+                  </span>
+                </motion.h1>
+
+                {/* Enhanced Description */}
+                <motion.p
+                  className="text-2xl md:text-3xl text-white/90 mb-12 max-w-3xl leading-relaxed font-light"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.8, duration: 1 }}
+                >
+                  Your event deserves more than a bartender.{" "}
+                  <span className="text-yellow-500/90 font-normal">It deserves an artist</span>, a storyteller,
                   a master of their craft who transforms every pour into an experience.
-                </p>
-                <Link href="/talent">
-                  <GoldButton size="lg" className="group">
-                    Explore Our Talent
-                    <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                  </GoldButton>
-                </Link>
+                </motion.p>
+
+                {/* Magnetic CTA Button */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 1.1, duration: 0.8 }}
+                  className="flex flex-wrap gap-6"
+                >
+                  <Link href="/talent">
+                    <MagneticButton className="group px-10 py-5 bg-gradient-to-r from-yellow-500 to-yellow-600 text-black font-bold text-lg rounded-full hover:shadow-2xl hover:shadow-yellow-500/50 transition-all duration-300 flex items-center gap-3">
+                      Explore Our Talent
+                      <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform duration-300" />
+                    </MagneticButton>
+                  </Link>
+
+                  <Link href="/booking">
+                    <MagneticButton className="px-10 py-5 border-2 border-white/30 text-white font-semibold text-lg rounded-full hover:border-yellow-500 hover:bg-yellow-500/10 backdrop-blur-sm transition-all duration-300">
+                      Book Now
+                    </MagneticButton>
+                  </Link>
+                </motion.div>
               </motion.div>
             </div>
           </div>
         </div>
+
+        {/* Scroll Indicator - Enhanced */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.5, duration: 1 }}
+          className="absolute bottom-12 left-1/2 -translate-x-1/2 z-20"
+        >
+          <motion.div
+            animate={{ y: [0, 10, 0] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            className="flex flex-col items-center gap-2"
+          >
+            <span className="text-white/60 text-sm tracking-wider">SCROLL</span>
+            <div className="w-[2px] h-12 bg-gradient-to-b from-yellow-500 to-transparent" />
+          </motion.div>
+        </motion.div>
       </section>
 
       {/* Bento Grid - Featured Content */}
@@ -67,35 +166,38 @@ export default function Home() {
             </div>
           </FadeIn>
 
-          {/* Magazine-style bento grid */}
+          {/* Premium Bento Grid with 3D Tilt */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Large Feature Card */}
+            {/* Large Feature Card with Tilt */}
             <FadeIn className="md:col-span-2 md:row-span-2">
-              <div className="group relative h-[600px] overflow-hidden rounded-2xl bg-zinc-900 border border-white/10 hover:border-yellow-500/50 transition-all duration-500">
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent z-10" />
-                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1536935338788-846bb9981813?q=80&w=2566')] bg-cover bg-center group-hover:scale-105 transition-transform duration-700" />
+              <TiltCard className="h-[600px]">
+                <div className="group relative h-full overflow-hidden rounded-2xl bg-zinc-900 border border-white/10 hover:border-yellow-500/50 transition-all duration-500">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent z-10" />
+                  <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1536935338788-846bb9981813?q=80&w=2566')] bg-cover bg-center group-hover:scale-105 transition-transform duration-700" />
 
-                <div className="relative z-20 h-full flex flex-col justify-end p-8">
-                  <span className="inline-block px-3 py-1 bg-yellow-500 text-black text-xs font-semibold uppercase tracking-wider rounded-full mb-4 w-fit">
-                    Featured Service
-                  </span>
-                  <h3 className="font-serif text-4xl text-white mb-4">
-                    Dry Hire Excellence
-                  </h3>
-                  <p className="text-white/70 text-lg mb-6 max-w-lg">
-                    You provide the spirits. We provide world-class bartending, premium mixers,
-                    and an unforgettable experience. The future of luxury event services.
-                  </p>
-                  <Link href="/services" className="text-yellow-500 font-semibold flex items-center gap-2 hover:gap-3 transition-all">
-                    Learn More <ArrowRight className="w-4 h-4" />
-                  </Link>
+                  <div className="relative z-20 h-full flex flex-col justify-end p-8">
+                    <span className="inline-block px-3 py-1 bg-yellow-500 text-black text-xs font-semibold uppercase tracking-wider rounded-full mb-4 w-fit">
+                      Featured Service
+                    </span>
+                    <h3 className="font-serif text-5xl text-white mb-4">
+                      Dry Hire Excellence
+                    </h3>
+                    <p className="text-white/70 text-xl mb-6 max-w-lg leading-relaxed">
+                      You provide the spirits. We provide world-class bartending, premium mixers,
+                      and an unforgettable experience. The future of luxury event services.
+                    </p>
+                    <Link href="/services" className="text-yellow-500 font-semibold flex items-center gap-2 hover:gap-3 transition-all text-lg">
+                      Learn More <ArrowRight className="w-5 h-5" />
+                    </Link>
+                  </div>
                 </div>
-              </div>
+              </TiltCard>
             </FadeIn>
 
-            {/* Stats Card */}
+            {/* Stats Card with Tilt */}
             <FadeIn delay={0.2}>
-              <div className="h-[292px] rounded-2xl bg-gradient-to-br from-yellow-500 to-yellow-600 p-8 flex flex-col justify-between">
+              <TiltCard className="h-[292px]">
+                <div className="h-full rounded-2xl bg-gradient-to-br from-yellow-500 to-yellow-600 p-8 flex flex-col justify-between shadow-2xl shadow-yellow-500/20">
                 <div>
                   <div className="text-6xl font-bold text-black mb-2">500+</div>
                   <p className="text-black/80 text-lg">Events Served</p>
@@ -107,15 +209,17 @@ export default function Home() {
               </div>
             </FadeIn>
 
-            {/* TABC Card */}
+            {/* TABC Card with Tilt */}
             <FadeIn delay={0.3}>
-              <div className="h-[292px] rounded-2xl bg-zinc-900 border border-white/10 p-8 flex flex-col justify-between hover:border-yellow-500/50 transition-all">
-                <Award className="w-12 h-12 text-yellow-500 mb-4" />
-                <div>
-                  <h4 className="text-2xl font-bold text-white mb-2">100% Certified</h4>
-                  <p className="text-white/60">Every bartender is TABC certified and fully insured</p>
+              <TiltCard className="h-[292px]">
+                <div className="h-full rounded-2xl bg-zinc-900 border border-white/10 p-8 flex flex-col justify-between hover:border-yellow-500/50 transition-all">
+                  <Award className="w-12 h-12 text-yellow-500 mb-4" />
+                  <div>
+                    <h4 className="text-2xl font-bold text-white mb-2">100% Certified</h4>
+                    <p className="text-white/60">Every bartender is TABC certified and fully insured</p>
+                  </div>
                 </div>
-              </div>
+              </TiltCard>
             </FadeIn>
           </div>
         </div>
