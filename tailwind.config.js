@@ -10,7 +10,7 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ["var(--font-inter)", "sans-serif"],
-        serif: ["Georgia", "Cambria", "Times New Roman", "serif"],
+        serif: ["var(--font-playfair)", "var(--font-cormorant)", "Georgia", "serif"],
       },
       colors: {
         background: 'oklch(var(--background))',

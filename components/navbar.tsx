@@ -41,24 +41,23 @@ export function Navbar() {
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-8">
+            <div className="hidden md:flex items-center space-x-2">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="relative text-white/80 hover:text-yellow-500 transition-colors duration-200 group"
+                  className="px-4 py-2 text-sm font-medium text-zinc-300 hover:text-white hover:bg-white/5 rounded-lg transition-all duration-200"
                 >
                   {link.label}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-yellow-500 group-hover:w-full transition-all duration-300" />
                 </Link>
               ))}
             </div>
 
             {/* Desktop Actions */}
-            <div className="hidden md:flex items-center space-x-4">
+            <div className="hidden md:flex items-center space-x-3">
               <Link href="/dashboard">
-                <button className="p-2 rounded-full hover:bg-white/5 transition-colors">
-                  <User className="w-5 h-5 text-white/80" />
+                <button className="p-2 rounded-lg hover:bg-white/5 transition-all">
+                  <User className="w-5 h-5 text-zinc-400 hover:text-white transition-colors" />
                 </button>
               </Link>
               <Link href="/booking">

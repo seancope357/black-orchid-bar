@@ -70,7 +70,7 @@ export default function Home() {
                 </GoldButton>
               </Link>
               <Link href="/booking">
-                <button className="px-8 py-4 rounded-xl bg-zinc-900 border border-zinc-800 text-white font-semibold hover:border-yellow-500/50 hover:bg-zinc-800 transition-all">
+                <button className="px-8 py-4 rounded-xl bg-zinc-900/50 backdrop-blur-sm border border-zinc-700 text-white font-semibold hover:border-yellow-500/50 hover:bg-zinc-800/80 transition-all">
                   Get Instant Quote
                 </button>
               </Link>
@@ -415,7 +415,7 @@ export default function Home() {
                 </GoldButton>
               </Link>
               <Link href="/booking">
-                <button className="px-8 py-4 rounded-xl bg-zinc-900 border border-zinc-800 text-white font-semibold hover:border-yellow-500/50 hover:bg-zinc-800 transition-all">
+                <button className="px-8 py-4 rounded-xl bg-zinc-900/50 backdrop-blur-sm border border-zinc-700 text-white font-semibold hover:border-yellow-500/50 hover:bg-zinc-800/80 transition-all">
                   Get Quote
                 </button>
               </Link>
