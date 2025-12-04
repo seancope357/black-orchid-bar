@@ -207,6 +207,7 @@ export default function Home() {
                   <span className="text-sm">4.9 Average Rating</span>
                 </div>
               </div>
+              </TiltCard>
             </FadeIn>
 
             {/* TABC Card with Tilt */}
